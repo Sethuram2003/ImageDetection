@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageDetection - Vanishing Point Detector</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                </svg>
+                <span>ImageDetection</span>
+            </div>
+            <div class="nav-info">
+                <span class="version">v1.0.0</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Vanishing Point Detection</h1>
+                <p class="subtitle">Analyze geometric consistency in images to identify AI-generated vs real photographs</p>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-card">
+                    <h2>Upload Image</h2>
+                    <div class="upload-area" id="uploadArea">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <h3>Drop your image here</h3>
+                        <p>or click to browse</p>
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="file-info" id="fileInfo" style="display: none;">
+                        <img id="previewImage" src="" alt="Preview">
+                        <div class="file-details">
+                            <p><strong>File:</strong> <span id="fileName"></span></p>
+                            <p><strong>Size:</strong> <span id="fileSize"></span></p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="analyzeBtn" style="display: none;">
+                        <span>Analyze Image</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-container">
+                    <!-- Loading State -->
+                    <div class="loading-state" id="loadingState">
+                        <div class="spinner"></div>
+                        <p>Analyzing image...</p>
+                    </div>
+
+                    <!-- Results Content -->
+                    <div class="results-content" id="resultsContent" style="display: none;">
+                        <!-- Visualization -->
+                        <div class="visualization-card">
+                            <h3>Analysis Visualization</h3>
+                            <img id="visualizationImage" src="" alt="Vanishing Points Visualization" class="visualization-img">
+                            <a href="#" id="downloadBtn" class="btn btn-secondary" download>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download Visualization
+                            </a>
+                        </div>
+
+                        <!-- Analysis Results -->
+                        <div class="analysis-card">
+                            <h3>Analysis Results</h3>
+                            <div class="stats-grid">
+                                <div class="stat">
+                                    <div class="stat-value" id="linesCount">0</div>
+                                    <div class="stat-label">Lines Detected</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="vpCount">0</div>
+                                    <div class="stat-label">Vanishing Points</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value" id="imageSize">-</div>
+                                    <div class="stat-label">Image Size</div>
+                                </div>
+                            </div>
+
+                            <!-- Classification -->
+                            <div class="classification-box" id="classificationBox">
+                                <h4>Classification</h4>
+                                <div class="classification-badge" id="classificationBadge"></div>
+                                <p id="classificationDescription"></p>
+                            </div>
+
+                            <!-- Vanishing Points Details -->
+                            <div class="vanishing-points-details" id="vanishingPointsDetails" style="display: none;">
+                                <h4>Vanishing Points</h4>
+                                <div class="vp-list" id="vpList"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error State -->
+                    <div class="error-state" id="errorState" style="display: none;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <h3>Analysis Failed</h3>
+                        <p id="errorMessage"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Info Section -->
+            <section class="info-section">
+                <div class="info-card">
+                    <h3>How It Works</h3>
+                    <ol class="info-list">
+                        <li><strong>Line Detection:</strong> Detects line segments using Canny edge detection and Probabilistic Hough Transform</li>
+                        <li><strong>Intersection Analysis:</strong> Computes intersections of all line pairs to find convergence points</li>
+                        <li><strong>Clustering:</strong> Groups intersection points using DBSCAN to identify true vanishing points</li>
+                        <li><strong>Classification:</strong> Analyzes VP count and distribution to assess geometric consistency</li>
+                    </ol>
+                </div>
+
+                <div class="info-card">
+                    <h3>Understanding Results</h3>
+                    <ul class="info-list">
+                        <li><strong>1 VP:</strong> Strong single perspective - typical of real photographs</li>
+                        <li><strong>2 VPs:</strong> Two-point perspective - common in architectural photos</li>
+                        <li><strong>3+ VPs:</strong> Complex geometry - may indicate AI-generated content or complex scenes</li>
+                        <li><strong>0 VPs:</strong> Minimal parallel structure - organic/natural scenes</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 ImageDetection. Analyzing geometric consistency in images.</p>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

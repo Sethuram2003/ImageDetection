@@ -387,7 +387,7 @@ def main():
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     # Assuming images are in a folder 'images' relative to this script
-    image_path = os.path.join(script_dir, 'images', 'generated2.png') 
+    image_path = os.path.join(script_dir, 'images', 'camera1.jpeg') 
     
     # --- Check if image exists before running ---
     if not os.path.exists(image_path):
