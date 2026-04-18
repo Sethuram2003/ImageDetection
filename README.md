@@ -522,4 +522,4 @@ Contributions welcome! Please:
 
 **Made with ❤️ for analyzing geometric consistency in images**
 
-*Last Updated: April 2024*
+*Last Updated: April 2026*
