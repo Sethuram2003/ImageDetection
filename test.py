@@ -387,7 +387,7 @@ def main():
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     # Assuming images are in a folder 'images' relative to this script
-    image_path = os.path.join(script_dir, 'images', 'camera1.jpeg') 
+    image_path = os.path.join(script_dir, 'images', 'generated3.png') 
     
     # --- Check if image exists before running ---
     if not os.path.exists(image_path):
@@ -401,7 +401,7 @@ def main():
         
         results = detector.detect(
             visualize=True,
-            save_visualization=os.path.join(script_dir, 'vanishing_points.png') # Optional saving
+            save_visualization=os.path.join(script_dir, 'vanishing_points_AI.png') # Optional saving
         )
         
     except FileNotFoundError as e:
